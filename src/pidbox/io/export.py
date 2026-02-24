@@ -34,7 +34,7 @@ def build_flat_frames(sessions: Iterable[SessionResult]) -> Tuple[pd.DataFrame, 
                         "t_ms": t_ms,
                         "step_response": value,
                         "log_rate_khz": session.log_rate_khz,
-                        "source_csv": str(session.csv_path),
+                        "source_csv": session.csv_path.name,
                     }
                 )
 

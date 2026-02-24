@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import asdict
+import json
+import math
 from pathlib import Path
 from typing import Any, Dict
 
 from mcp.server.fastmcp import FastMCP
 
 from pidbox.analysis.pipeline import analyze_blackbox
+from pidbox.io.export import build_flat_frames
 from pidbox.models import AnalysisConfig
 
 
@@ -28,6 +30,44 @@ def _result_summary(result) -> Dict[str, Any]:
     }
 
 
+def _json_safe_value(value: Any) -> Any:
+    if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+        return None
+    return value
+
+
+def _json_safe_records(records: list[dict]) -> list[dict]:
+    safe_records = []
+    for row in records:
+        safe_records.append({key: _json_safe_value(val) for key, val in row.items()})
+    return safe_records
+
+
+def _result_content(result, max_points_rows: int | None = None) -> Dict[str, Any]:
+    points_df, metrics_df = build_flat_frames(result.sessions)
+    total_points_rows = len(points_df)
+
+    if max_points_rows is not None and max_points_rows >= 0:
+        points_df = points_df.head(max_points_rows)
+
+    points_records = _json_safe_records(points_df.to_dict(orient="records"))
+    metrics_records = _json_safe_records(metrics_df.to_dict(orient="records"))
+
+    metadata_content: Dict[str, Any] | None = None
+    if result.metadata_json and result.metadata_json.exists():
+        metadata_content = json.loads(result.metadata_json.read_text(encoding="utf-8"))
+
+    return {
+        "step_response_points": points_records,
+        "step_response_metrics": metrics_records,
+        "metadata": metadata_content,
+        "points_row_count": len(points_records),
+        "total_points_row_count": total_points_rows,
+        "metrics_row_count": len(metrics_records),
+        "points_truncated": bool(max_points_rows is not None and len(points_records) < total_points_rows),
+    }
+
+
 def build_server(project_root: Path | None = None) -> FastMCP:
     root = project_root or _default_project_root()
     app = FastMCP("pidbox")
@@ -41,6 +81,7 @@ def build_server(project_root: Path | None = None) -> FastMCP:
         export_csv: bool = True,
         export_parquet: bool = True,
         decoder: str = "auto",
+        max_points_rows: int | None = None,
     ) -> Dict[str, Any]:
         config = AnalysisConfig(
             smooth_factor=smooth_factor,
@@ -51,7 +92,9 @@ def build_server(project_root: Path | None = None) -> FastMCP:
             decoder=decoder,
         )
         result = analyze_blackbox(Path(input_path).resolve(), root, None, config)
-        return _result_summary(result)
+        payload = _result_summary(result)
+        payload.update(_result_content(result, max_points_rows=max_points_rows))
+        return payload
 
     @app.tool()
     def list_sessions(input_path: str, decoder: str = "auto") -> Dict[str, Any]:
