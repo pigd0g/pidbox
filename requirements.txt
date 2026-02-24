@@ -1,2 +1,6 @@
-# Add runtime dependencies here, e.g.:
-# requests>=2.0
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
+statsmodels>=0.14
+pyarrow>=14.0
+mcp>=1.6.0

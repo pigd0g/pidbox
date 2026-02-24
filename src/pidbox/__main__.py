@@ -1,5 +1,4 @@
-def main():
-    print("Hello from pidbox")
+from pidbox.cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
