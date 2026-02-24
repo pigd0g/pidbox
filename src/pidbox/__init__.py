@@ -1,1 +1,3 @@
-__all__ = ["main"]
+from .decoder import BlackboxDecoder
+
+__all__ = ["BlackboxDecoder"]
