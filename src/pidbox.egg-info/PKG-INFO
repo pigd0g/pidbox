@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: pidbox
+Version: 0.1.0
+Summary: pidbox package
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# pidbox
+
+Minimal Python package scaffold for `pidbox`.
+
+Quickstart (Windows PowerShell):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m pidbox
+```
+
+Quickstart (Windows cmd):
+
+```cmd
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+python -m pidbox
+```

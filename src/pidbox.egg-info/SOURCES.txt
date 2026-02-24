@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/pidbox/__init__.py
+src/pidbox/__main__.py
+src/pidbox.egg-info/PKG-INFO
+src/pidbox.egg-info/SOURCES.txt
+src/pidbox.egg-info/dependency_links.txt
+src/pidbox.egg-info/top_level.txt
