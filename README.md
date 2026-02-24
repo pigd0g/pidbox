@@ -4,8 +4,8 @@ Command-line and MCP tools for analyzing PID loop step responses from Betaflight
 
 ## Features
 
-- Decodes `.bbl` / `.bfl` logs using bundled decoders in `./blackbox-decode`.
-- Auto-detects Betaflight vs INAV decoder (`blackbox_decode.exe` and `blackbox_decode_INAV.exe`).
+- Decodes `.bbl` / `.bfl` logs using the Python `orangebox` library (no external executables).
+- Auto-detects and parses multiple sessions directly from the log file.
 - Computes PTB-style step responses for roll, pitch, and yaw.
 - Handles multiple sessions in a single Blackbox file and overlays them for comparison.
 - Exports:
@@ -38,8 +38,7 @@ Optional flags:
 python -m pidbox analyze C:\path\to\flight.bbl `
 	--smooth-factor 2 `
 	--min-input 20 `
-	--y-correction `
-	--decoder auto
+	--y-correction
 ```
 
 Output folder format:

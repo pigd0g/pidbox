@@ -80,7 +80,7 @@ def build_server(project_root: Path | None = None) -> FastMCP:
         y_correction: bool = False,
         export_csv: bool = True,
         export_parquet: bool = True,
-        decoder: str = "auto",
+        decoder: str = "orangebox",
         max_points_rows: int | None = None,
     ) -> Dict[str, Any]:
         config = AnalysisConfig(
@@ -97,7 +97,7 @@ def build_server(project_root: Path | None = None) -> FastMCP:
         return payload
 
     @app.tool()
-    def list_sessions(input_path: str, decoder: str = "auto") -> Dict[str, Any]:
+    def list_sessions(input_path: str, decoder: str = "orangebox") -> Dict[str, Any]:
         config = AnalysisConfig(decoder=decoder, export_csv=False, export_parquet=False)
         result = analyze_blackbox(Path(input_path).resolve(), root, None, config)
         return {
@@ -118,7 +118,7 @@ def build_server(project_root: Path | None = None) -> FastMCP:
     def get_axis_metrics(
         input_path: str,
         axis: str,
-        decoder: str = "auto",
+        decoder: str = "orangebox",
         smooth_factor: int = 2,
         min_input: float = 20.0,
     ) -> Dict[str, Any]:
@@ -146,7 +146,7 @@ def build_server(project_root: Path | None = None) -> FastMCP:
         }
 
     @app.tool()
-    def get_output_paths(input_path: str, decoder: str = "auto") -> Dict[str, Any]:
+    def get_output_paths(input_path: str, decoder: str = "orangebox") -> Dict[str, Any]:
         config = AnalysisConfig(decoder=decoder)
         result = analyze_blackbox(Path(input_path).resolve(), root, None, config)
         return _result_summary(result)

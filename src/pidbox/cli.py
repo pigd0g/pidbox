@@ -18,7 +18,12 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--smooth-factor", type=int, default=2, choices=[1, 2, 3, 4], help="LOWESS smoothing level")
     analyze.add_argument("--min-input", type=float, default=20.0, help="Minimum setpoint threshold (deg/s)")
     analyze.add_argument("--y-correction", action="store_true", help="Apply y-axis offset correction for yaw")
-    analyze.add_argument("--decoder", choices=["auto", "betaflight", "inav"], default="auto", help="Decoder selection")
+    analyze.add_argument(
+        "--decoder",
+        choices=["orangebox"],
+        default="orangebox",
+        help="Decoder backend (orangebox)",
+    )
     analyze.add_argument("--no-csv", action="store_true", help="Disable CSV export")
     analyze.add_argument("--no-parquet", action="store_true", help="Disable Parquet export")
 

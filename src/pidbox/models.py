@@ -13,7 +13,7 @@ class AnalysisConfig:
     smooth_factor: int = 2
     y_correction: bool = False
     min_input: float = 20.0
-    decoder: str = "auto"
+    decoder: str = "orangebox"
     export_csv: bool = True
     export_parquet: bool = True
 
