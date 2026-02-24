@@ -9,6 +9,13 @@ from orangebox import Parser
 
 
 def decode_blackbox(log_path: Path, project_root: Path, decoder: str = "orangebox") -> Tuple[str, List[Path]]:
+    """
+    Decode a Blackbox log into per-session CSV files using the orangebox parser.
+
+    The ``project_root`` and ``decoder`` parameters are retained for backward compatibility
+    with previous signatures; decoder selection is ignored because orangebox is the only
+    supported backend.
+    """
     parser = Parser.load(str(log_path))
     session_count = parser.reader.log_count
 

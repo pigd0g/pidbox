@@ -22,6 +22,8 @@ class _StubParser:
         self.reader = SimpleNamespace(log_count=len(sessions))
 
     def set_log_index(self, index: int):
+        if index < 1 or index > self.reader.log_count:
+            raise RuntimeError("Invalid log index")
         self._current_index = index - 1
 
     def frames(self):
